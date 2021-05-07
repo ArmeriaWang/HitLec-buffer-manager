@@ -1,4 +1,4 @@
 docs/
 *.db
 **/test.*
-#src/badgerdb_main
+src/badgerdb_main
