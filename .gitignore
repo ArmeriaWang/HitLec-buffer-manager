@@ -2,3 +2,4 @@ docs/
 *.db
 **/test.*
 src/badgerdb_main
+.idea/
