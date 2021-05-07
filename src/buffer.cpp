@@ -43,7 +43,6 @@ namespace badgerdb {
     void BufMgr::allocBuf(FrameId &frame) {
         uint32_t pinnedCnt = 0;
         while (true) {
-            // TODO: PIN
             BufDesc &bufferDesc = bufDescTable[clockHand];
             if (bufferDesc.pinCnt > 0) {
                 pinnedCnt++;
@@ -54,7 +53,9 @@ namespace badgerdb {
                 if (bufferDesc.dirty) {
                     bufferDesc.file->writePage(bufPool[clockHand]);
                 }
-                hashTable->remove(bufferDesc.file, bufferDesc.pageNo);
+                if (bufferDesc.valid) {
+                    hashTable->remove(bufferDesc.file, bufferDesc.pageNo);
+                }
                 bufferDesc.Clear();
                 frame = bufferDesc.frameNo;
                 return;
@@ -125,9 +126,10 @@ namespace badgerdb {
         pageNo = filePage.page_number();
         FrameId frameId;
         allocBuf(frameId);
+        bufPool[frameId] = filePage;
         page = &bufPool[frameId];
         hashTable->insert(file, pageNo, frameId);
-        bufDescTable->Set(file, pageNo);
+        bufDescTable[frameId].Set(file, pageNo);
     }
 
     void BufMgr::disposePage(File *file, const PageId pageNo) {

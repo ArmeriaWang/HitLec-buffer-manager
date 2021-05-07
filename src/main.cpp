@@ -40,6 +40,10 @@ void testBufMgr();
 
 int main() {
     //Following code shows how to you File and Page classes
+    std::cout << "test" << std::endl;
+
+//    std::streambuf *backup;
+//    backup = std::cout.rdbuf();
 
     const std::string &filename = "test.db";
     // Clean up from any previous runs that crashed.
@@ -75,6 +79,7 @@ int main() {
             for (PageIterator page_iter = (*iter).begin();
                  page_iter != (*iter).end();
                  ++page_iter) {
+//                std::cout.rdbuf(backup);
                 std::cout << "Found record: " << *page_iter
                           << " on page " << (*iter).page_number() << "\n";
             }
