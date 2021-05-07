@@ -3,3 +3,4 @@ docs/
 **/test.*
 src/badgerdb_main
 .idea/
+.DS_Store
